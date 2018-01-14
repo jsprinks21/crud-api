@@ -1,0 +1,23 @@
+{
+  "name": "crud-api",
+  "version": "1.0.0",
+  "description": "CRUD API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsprinks21/crud-api.git"
+  },
+  "author": "Joseph Sprinkle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jsprinks21/crud-api/issues"
+  },
+  "homepage": "https://github.com/jsprinks21/crud-api#readme",
+  "dependencies": {
+    "body-parser": "*",
+    "express": "*"
+  }
+}
