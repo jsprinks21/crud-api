@@ -18,6 +18,7 @@
   "homepage": "https://github.com/jsprinks21/crud-api#readme",
   "dependencies": {
     "body-parser": "*",
-    "express": "*"
+    "express": "*",
+    "mongoose": "*"
   }
 }
