@@ -8,9 +8,15 @@ const Comment = require('./models/comment');
 
 const port = 8080;
 
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
 //Create
 app.post('/api/posts', (req, res) => {
-  res.send('Post Create');
+  Post.createPost(req.body, (err, post) =>{
+    if (err) throw err;
+    res.json(post);
+  });
 });
 
 app.post('/api/comments', (req, res) => {
@@ -19,7 +25,10 @@ app.post('/api/comments', (req, res) => {
 
 //Read
 app.get('/api/posts', (req, res) => {
-  res.send('Post Read');
+  Post.getPosts({}, (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
 });
 
 app.get('/api/comments', (req, res) => {
@@ -28,7 +37,11 @@ app.get('/api/comments', (req, res) => {
 
 //Update
 app.put('/api/posts', (req, res) => {
-  res.send('Post Update');
+  //req.body[0] = conditions, req.body[1] = update
+  Post.updateOnePost(req.body[0], req.body[1], (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
 });
 
 app.put('/api/comments', (req, res) => {
@@ -37,7 +50,10 @@ app.put('/api/comments', (req, res) => {
 
 //Delete
 app.delete('/api/posts', (req, res) => {
-  res.send('Post Delete');
+  Post.deleteOnePost(req.body, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
 });
 
 app.delete('/api/comments', (req, res) => {

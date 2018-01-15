@@ -23,18 +23,20 @@ module.exports.getPosts = function(conditions, callback) {
 };
 
 //Update
+/*
 module.exports.updatePosts = function(conditions, doc, callback) {
   Post.update(conditions, doc, null, callback);
-};
+};*/
 
 module.exports.updateOnePost = function(conditions, update, callback) {
   Post.findOneAndUpdate(conditions, update, null, callback);
 };
 
 //Delete
+/*
 module.exports.deletePosts = function(conditions, callback) {
   Post.remove(conditions, callback);
-};
+};*/
 
 module.exports.deleteOnePost = function(conditions, callback) {
   Post.findOneAndRemove(conditions, null, callback);

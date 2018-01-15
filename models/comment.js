@@ -24,18 +24,20 @@ module.exports.getComments = function(conditions, callback) {
 };
 
 //Update
+/*
 module.exports.updateComments = function(conditions, doc, callback) {
   Comment.update(conditions, doc, null, callback);
-};
+};*/
 
 module.exports.updateOneComment = function(conditions, update, callback) {
   Comment.findOneAndUpdate(conditions, update, null, callback);
 };
 
 //Delete
+/*
 module.exports.deleteComments = function(conditions, callback) {
   Comment.remove(conditions, callback);
-};
+};*/
 
 module.exports.deleteOneComment = function(conditions, callback) {
   Comment.findOneAndRemove(conditions, null, callback);
