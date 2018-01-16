@@ -29,7 +29,7 @@ module.exports.updatePosts = function(conditions, doc, callback) {
 };*/
 
 module.exports.updateOnePost = function(conditions, update, callback) {
-  Post.findOneAndUpdate(conditions, update, null, callback);
+  Post.findOneAndUpdate(conditions, update, {"new": true}, callback);
 };
 
 //Delete

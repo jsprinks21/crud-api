@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const db = require('./db');
 
 const Post = require('./models/post');
-const Comment = require('./models/comment');
 
 const port = 8080;
 
@@ -20,7 +19,16 @@ app.post('/api/posts', (req, res) => {
 });
 
 app.post('/api/comments', (req, res) => {
-  res.send('Comment Create');
+  let comment = req.body;
+  let conditions = { "_id": comment.postID };
+  Post.getPosts(conditions, (err, result) => {
+    let postComments = result[0].comments;
+    postComments.push(comment);
+    Post.updateOnePost(conditions, {"comments": postComments}, (err, post) => {
+      if (err) throw err;
+      res.json(post);
+    });
+  });
 });
 
 //Read
@@ -32,7 +40,14 @@ app.get('/api/posts', (req, res) => {
 });
 
 app.get('/api/comments', (req, res) => {
-  res.send('Comment Read');
+  Post.getPosts({}, (err, results) => {
+    if (err) throw err;
+    let comments = [];
+    results.forEach((post) => {
+      comments = comments.concat(post.comments);
+    });
+    res.json(comments);
+  });
 });
 
 //Update
