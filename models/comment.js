@@ -11,6 +11,6 @@ const commentSchema = new Schema({
   downvotes: {type: Number, default: 0}
 });
 
-const Comment = module.exports; // = db.model('Comment', commentSchema);
+const Comment = module.exports;
 
 module.exports.schema = commentSchema;

@@ -10,7 +10,14 @@ const port = 8080;
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-//Create
+/*
+CREATE post
+Form:
+  {
+    "title": title,
+    "text": text
+  }
+*/
 app.post('/api/posts', (req, res) => {
   Post.createPost(req.body, (err, post) =>{
     if (err) throw err;
@@ -18,20 +25,29 @@ app.post('/api/posts', (req, res) => {
   });
 });
 
+/*
+CREATE comment
+Form:
+  {
+    "text": text
+  }
+*/
 app.post('/api/comments', (req, res) => {
   let comment = req.body;
   let conditions = { "_id": comment.postID };
   Post.getPosts(conditions, (err, result) => {
     let postComments = result[0].comments;
     postComments.push(comment);
-    Post.updateOnePost(conditions, {"comments": postComments}, (err, post) => {
+    Post.updateOnePost(conditions, {"comments": postComments}, (err, post) => {comments
       if (err) throw err;
       res.json(post);
     });
   });
 });
 
-//Read
+/*
+READ posts
+*/
 app.get('/api/posts', (req, res) => {
   Post.getPosts({}, (err, results) => {
     if (err) throw err;
@@ -39,6 +55,9 @@ app.get('/api/posts', (req, res) => {
   });
 });
 
+/*
+READ comments
+*/
 app.get('/api/comments', (req, res) => {
   Post.getPosts({}, (err, results) => {
     if (err) throw err;
@@ -50,20 +69,59 @@ app.get('/api/comments', (req, res) => {
   });
 });
 
-//Update
+/*
+UPDATE post
+Form:
+  [{
+    "_id": postID
+  },
+  {
+    "fieldToUpdate": update,
+    ...
+  }]
+*/
 app.put('/api/posts', (req, res) => {
-  //req.body[0] = conditions, req.body[1] = update
   Post.updateOnePost(req.body[0], req.body[1], (err, result) => {
     if (err) throw err;
     res.json(result);
   });
 });
 
+/*
+UPDATE comment
+Form:
+  [{
+    "_id": postID,
+    "comments._id": commentID
+  },
+  {
+    "postID": postID,
+    "text": text,
+    "downvotes": downvotes, //optional
+    "upvotes": upvotes, //optional
+    "date": date //optional
+  }]
+*/
 app.put('/api/comments', (req, res) => {
-  res.send('Comment Update');
+  comment = req.body[1];
+  update = {
+    "$set": {
+      "comments.$": comment
+    }
+  };
+  Post.updateOnePost(req.body[0], update, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
 });
 
-//Delete
+/*
+DELETE post
+Form:
+  {
+    "_id": postID
+  }
+*/
 app.delete('/api/posts', (req, res) => {
   Post.deleteOnePost(req.body, (err, result) => {
     if (err) throw err;
@@ -71,8 +129,24 @@ app.delete('/api/posts', (req, res) => {
   });
 });
 
+/*
+DELETE comment
+Form:
+  {
+    "_id": postID,
+    "comments._id": commentID
+  }
+*/
 app.delete('/api/comments', (req, res) => {
-  res.send('Comment Delete');
+  update = {
+    "$unset" :{
+      "comments.$": 1
+    }
+  }
+  Post.updateOnePost(req.body, update, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  })
 });
 
 app.listen(port);
